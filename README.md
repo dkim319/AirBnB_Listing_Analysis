@@ -27,7 +27,7 @@ There are 3 data files.  One is the source data, another is to transfer the data
 
 ## Results<a name="results"></a>
 
-The findings are documented in this Medium post. [here](https://medium.com/@josh_2774/how-do-you-become-a-developer-5ef1c1c68711).
+The findings are documented in this Medium post. [here](https://medium.com/@dkim319/can-i-tell-if-an-airbnb-listing-is-overpriced-9a2d1361e3fe).
 
 
 ## Licensing, Authors, Acknowledgements<a name="licensing"></a>
