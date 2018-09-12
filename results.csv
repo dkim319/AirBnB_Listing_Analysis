@@ -1,0 +1,2 @@
+,colsample_bytree,depth,est,lr,mae_test,mae_train,r2_test,r2_train,subsample
+0,0.5,9,400,0.01,76.66648828211854,53.78985935557606,0.6270886655294361,0.9239324802447858,0.75
