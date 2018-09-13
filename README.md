@@ -27,7 +27,9 @@ There are 3 data files.  One is the source data, another is to transfer the data
 
 ## Results<a name="results"></a>
 
-The findings are documented in this Medium post. [here](https://medium.com/@dkim319/can-i-tell-if-an-airbnb-listing-is-overpriced-9a2d1361e3fe).
+The findings are documented in this Medium post: [here](https://medium.com/@dkim319/can-i-tell-if-an-airbnb-listing-is-overpriced-9a2d1361e3fe)
+
+The GitHub repository in located here: [here](https://github.com/dkim319/AirBnB-Listing-Analysis)
 
 
 ## Licensing, Authors, Acknowledgements<a name="licensing"></a>
@@ -35,3 +37,4 @@ The findings are documented in this Medium post. [here](https://medium.com/@dkim
 The AirBnB was made publicly available by AirBnb. Link: [here](http://insideairbnb.com/get-the-data.html)
 
 The code used in this project was learned from the Data Scientist Nanodegree Term 2 class.
+
