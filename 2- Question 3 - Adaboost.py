@@ -27,7 +27,7 @@ print(data_new.head(5))
 print('Remove the Unnamed: 0 column')
 data_new = data_new.drop('Unnamed: 0', axis = 1)
 
-data_new = data_new[['accommodates'	,'bathrooms'	,'bedrooms'	,'beds'	,'availability_30'	,'availability_60'	,'availability_90'	,'availability_365'	,'number_of_reviews'	,'review_scores_rating'	,'review_scores_accuracy'	,'review_scores_cleanliness'	,'review_scores_checkin'	,'review_scores_communication'	,'review_scores_location'	,'review_scores_value'	,'calculated_host_listings_count'	,'reviews_per_month'	,'name_word_count'	,'summary_word_count'	,'space_word_count'	,'description_word_count'	,'neighborhood_overview_word_count'	,'notes_word_count'	,'transit_word_count'	,'access_word_count'	,'interaction_word_count'	,'house_rules_word_count'	,'host_about_word_count'	,'dist_dtla'	,'dist_hw'	,'dist_sm'	,'dist_bh','neighbourhood_cleansed','property_type','room_type','bed_type','price']]
+data_new = data_new[['accommodates','bathrooms'	,'bedrooms','beds','availability_30','availability_60','availability_90','availability_365','number_of_reviews','review_scores_rating','review_scores_accuracy','review_scores_cleanliness','review_scores_checkin','review_scores_communication','review_scores_location','review_scores_value','calculated_host_listings_count'	,'reviews_per_month'	,'name_word_count'	,'summary_word_count'	,'space_word_count'	,'description_word_count'	,'neighborhood_overview_word_count'	,'notes_word_count'	,'transit_word_count'	,'access_word_count'	,'interaction_word_count'	,'house_rules_word_count'	,'host_about_word_count'	,'dist_dtla'	,'dist_hw'	,'dist_sm'	,'dist_bh','neighbourhood_cleansed','property_type','room_type','bed_type','price']]
 
 # need to convert all categorical varaibles into dummy variables
 cat_vars = data_new[['neighbourhood_cleansed','property_type','room_type','bed_type']].columns
@@ -48,25 +48,23 @@ print(missing_vals.sort_values(ascending=0))
 
 print('Impute the review variables with the mean')
 print('')
-data_new['review_scores_value'] = data_new['review_scores_value'].fillna(data_new['review_scores_value'].mean())
-data_new['review_scores_location'] = data_new['review_scores_location'].fillna(data_new['review_scores_location'].mean())
-data_new['review_scores_checkin'] = data_new['review_scores_checkin'].fillna(data_new['review_scores_checkin'].mean())
-data_new['review_scores_communication'] = data_new['review_scores_communication'].fillna(data_new['review_scores_communication'].mean())
-data_new['review_scores_cleanliness'] = data_new['review_scores_cleanliness'].fillna(data_new['review_scores_cleanliness'].mean())
-data_new['review_scores_accuracy'] = data_new['review_scores_accuracy'].fillna(data_new['review_scores_accuracy'].mean())
-data_new['review_scores_rating'] = data_new['review_scores_rating'].fillna(data_new['review_scores_rating'].mean())
+
+review_vars = data_new[['review_scores_value','review_scores_location','review_scores_checkin','review_scores_communication','review_scores_cleanliness','review_scores_accuracy','review_scores_rating']].columns
+
+for x in review_vars:
+    data_new[x] = data_new[x].fillna(data_new[x].mean())
 
 print('Impute the host response rate and reviews per month with 0')
-#data_new['host_response_rate'] = data_new['host_response_rate'].fillna(0)
 data_new['reviews_per_month'] = data_new['reviews_per_month'].fillna(0)
 print('')
 
 print('Impute the beds, bathrooms, bedrooms, host listing count, host total listing count to 1')
 print('')
-data_new['beds'] = data_new['beds'].fillna(1)
-data_new['bathrooms'] = data_new['bathrooms'].fillna(1)
-data_new['bedrooms'] = data_new['bedrooms'].fillna(1)
 
+impute_vars = data_new[['beds','bathrooms','bedrooms']].columns
+
+for x in impute_vars:
+    data_new[x] = data_new[x].fillna(1)
 
 ##################
 # Remove 0 price rows
@@ -87,11 +85,10 @@ plt.show()
 plt.clf()
 
 print('Finding - Price is heavily skewed and majority of prices are within the 0 to 200 range')
-
 data_new['price'].describe()
 
-print('Finding - Price has large standard deviation, which is caused by the large range of possible values.')
-print('Min is 0 and the max is 25,000')
+print('Finding - Price has large standard deviation, which is caused by the large range of possible values.  Min is 0 and the max is 25,000')
+print('')
 
 # Now the dataset is ready, split the data 
 features = data_new.drop('price',axis=1)
@@ -102,10 +99,8 @@ features_train, features_test, target_train, target_test = train_test_split(feat
 # initalize variables
 r2_list_train = []
 mae_list_train = []
-
 r2_list_test = []
 mae_list_test = []
-
 est_list = []
 lr_list = []
 
@@ -159,10 +154,8 @@ results.to_csv('results.csv')
 
 final_n_estimators = e
 final_lr = l
-
 m1_r2_train = r2_test
 m1_mae_train = mae_test
-
 m1_r2_test = r2_test
 m1_mae_test = mae_test
 
@@ -180,10 +173,8 @@ from sklearn import feature_selection
 
 r2_list_train = []
 mae_list_train = []
-
 r2_list_test = []
 mae_list_test = []
-
 per_list = []
 
 #percentile = range(1,100)

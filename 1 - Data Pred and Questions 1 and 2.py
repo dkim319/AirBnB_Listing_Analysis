@@ -139,29 +139,31 @@ print('')
 print(data_new.describe())
 print('')
 
+def print_chart(df, charttype):
+    '''
+    This function takes in a dataframe and chart type and generates a chart and clears the plt for the next chart
+    '''
+    if charttype == 'heatmap':
+        sns.heatmap(df, annot=True, fmt=".2f")
+    else:
+        df.plot(kind=charttype)
+    plt.show()
+    plt.clf()
+
 # First review the correlation between people accommodated, bathrooms, bedrooms, bed & price
 # the heatmap shows a strongest correlation with bathrooms, then bed, then accommodates
 #heatmap1 =
 print('Price Correlation with Accomodates, Bathrooms, Beds')
-sns.heatmap(data_new[['accommodates','bathrooms','bedrooms','beds','price']].corr(), annot=True, fmt=".2f")
-plt.show()
-plt.clf()
+print_chart(data_new[['accommodates','bathrooms','bedrooms','beds','price']].corr(),'heatmap')
 
-data_new.groupby(['bathrooms'])['price'].mean().plot(kind='line')
-plt.show()
-plt.clf()
+print_chart(data_new.groupby(['bathrooms'])['price'].mean(),'line')
 
-print('Finding - There is strong correlation between price and accomodates, bathrooms, bedrooms, beds.')
-print('There is correlation value between price and bathroom is 0.54 and the correlation value between price and bedrooms is 0.45.')
-print('When charting mean price by bathrooms, it shows that the more bathrooms results in a higher price for the most part. ')
+print('Finding - There is strong correlation between price and accomodates, bathrooms, bedrooms, beds.  There is correlation value between price and bathroom is 0.54 and the correlation value between price and bedrooms is 0.45.  When charting mean price by bathrooms, it shows that the more bathrooms results in a higher price for the most part. ')
 
 # Review the correlation between people accomdated, bathrooms, bedrooms, bed & price
 # it looks like there is very little correlation between the availability mettrics and price
-#heatmap2 =
 print('Price Correlation with Availabilty variables')
-sns.heatmap(data_new[['availability_30','availability_60','availability_90','availability_365','price']].corr(), annot=True, fmt=".2f")
-plt.show()
-plt.clf()
+print_chart(data_new[['availability_30','availability_60','availability_90','availability_365','price']].corr(),'heatmap')
 
 print('Finding - There is slight correlation between price and availability variables.')
 print('')
@@ -178,25 +180,18 @@ nc_agg = data_new.groupby(['neighbourhood_cleansed'])['price'].mean().sort_value
 nc_agg = (nc_agg - data_new['price'].mean())/data_new['price'].mean()
 
 print('Mean Price by Neighborhood - Top 10')
-nc_agg.head(10).plot(kind='bar')
-plt.show()
-plt.clf()
+print_chart(nc_agg.head(10),'bar')
 
 print(nc_agg.head(10))
 print('')
 
 print('Mean Price by Neighborhood - Bottom 10')
-nc_agg.tail(10).plot(kind='bar')
-plt.show()
-plt.clf()
+print_chart(nc_agg.tail(10),'bar')
 
 print(nc_agg.tail(10))
 print('')
 
-print('Finding - This shows that location is everything.')
-print('Neighborhood has a big impact on price. The most expensive neighborhood has a mean price that is 8 times higher than the overall mean price.')
-print('The least expensive neighborhoods has a mean price that is 90% less than the overall mean price')
-print('An interesting aspect of the highest priced neighborhoods is that they are on the outskirts of Los Angeles or by the beach')
+print('Finding - This shows that location is everything.  Neighborhood has a big impact on price. The most expensive neighborhood has a mean price that is 8 times higher than the overall mean price.  The least expensive neighborhoods has a mean price that is 90% less than the overall mean price.  An interesting aspect of the highest priced neighborhoods is that they are on the outskirts of Los Angeles or by the beach')
 
 # Compare price by city
 print('Price Grouped by City - Top 10')
@@ -207,15 +202,10 @@ city_agg = data_new.groupby(['neighbourhood_cleansed'])['price'].mean().sort_val
 city_agg = (city_agg - data_new['price'].mean())/data_new['price'].mean()
 
 print('Mean Price by City - Top 10')
-city_agg.head(10).plot(kind='bar')
-plt.show()
-plt.clf()
-
+print_chart(city_agg.head(10),'bar')
 
 print('Mean Price by City - Bottom 10')
-city_agg.tail(10).plot(kind='bar')
-plt.show()
-plt.clf()
+print_chart(city_agg.tail(10),'bar')
 
 print('Finding - The city analysis mirrors the neighborhood analysis since the neighborhoods almost have a one to one mapping with city.')
 print('')
@@ -230,29 +220,22 @@ print('')
 
 # Compare price by property type
 print('Price Grouped by Property Type')
-data_new.groupby(['property_type'])['price'].mean().sort_values(ascending=0).plot(kind='bar')
-plt.show()
-plt.clf()
+print_chart(data_new.groupby(['property_type'])['price'].mean().sort_values(ascending=0),'bar')
 
-print('Finding - The property type also has an impact on price.  Dome house, villa, and castle have the highest average price.')
-print('While, nature lodge, dorm, and hut have the lowest average price.')
-
+print('Finding - The property type also has an impact on price.  Dome house, villa, and castle have the highest average price.  While, nature lodge, dorm, and hut have the lowest average price.')
 
 print (data_new.groupby(['property_type'])['price'].mean().sort_values(ascending=0).head(10))
 print('')
 
 print('Price Grouped by Room Type')
-data_new.groupby(['room_type'])['price'].mean().sort_values(ascending=0).plot(kind='bar')
-plt.show()
-plt.clf()
+print_chart(data_new.groupby(['room_type'])['price'].mean().sort_values(ascending=0),'bar')
 
 print (data_new.groupby(['room_type'])['price'].mean().sort_values(ascending=0))
 print('')
 
 print('Finding - Whole house rentals have a higher mean price compared to private and shared room rentals.')
 
-print('Summary Finding - The accomodates, bathrooms, bedrooms, and beds are correlated with price.  The location related variablees such as neighborhood, city, and zipcode have a huge impact on price as well.')
-print('Property type and room type impact price as expected.')
+print('Summary Finding - The accomodates, bathrooms, bedrooms, and beds are correlated with price.  The location related variablees such as neighborhood, city, and zipcode have a huge impact on price as well.  Property type and room type impact price as expected.')
 
 ##########################################################
 # Analyze
@@ -263,78 +246,27 @@ print('Property type and room type impact price as expected.')
 ##########################################################
 
 print('Price Correlation with Review Variables')
-sns.heatmap(data_new[['review_scores_rating','review_scores_accuracy','review_scores_cleanliness','review_scores_checkin','review_scores_communication','review_scores_location','review_scores_value','price']].corr(), annot=True, fmt=".2f")
-plt.show()
-plt.clf()
+print_chart(data_new[['review_scores_rating','review_scores_accuracy','review_scores_cleanliness','review_scores_checkin','review_scores_communication','review_scores_location','review_scores_value','price']].corr(),'heatmap')
 
-data_new.groupby(['review_scores_rating'])['price'].mean().plot(kind='line')
-plt.show()
-plt.clf()
+review_vars = data_new[['review_scores_rating','review_scores_accuracy','review_scores_cleanliness','review_scores_checkin','review_scores_communication','review_scores_location','review_scores_value']].columns
 
-data_new.groupby(['review_scores_accuracy'])['price'].mean().plot(kind='line')
-plt.show()
-plt.clf()
+for x in review_vars:
+    print_chart(data_new.groupby([x])['price'].mean(),'line')
 
-data_new.groupby(['review_scores_cleanliness'])['price'].mean().plot(kind='line')
-plt.show()
-plt.clf()
-
-data_new.groupby(['review_scores_checkin'])['price'].mean().plot(kind='line')
-plt.show()
-plt.clf()
-
-data_new.groupby(['review_scores_communication'])['price'].mean().plot(kind='line')
-plt.show()
-plt.clf()
-
-data_new.groupby(['review_scores_location'])['price'].mean().plot(kind='line')
-plt.show()
-plt.clf()
-
-data_new.groupby(['review_scores_value'])['price'].mean().plot(kind='line')
-plt.show()
-plt.clf()
-
-print('Finding - There are no strong correlation or pattern between price and the review related variables')
-print('Based on the location review chart, it can be implied that higher prices are associated with better location reviews.')
-print('Based on the value review chart, it can be implied that higher prices are associted with lower value reviews.')
+print('Finding - There are no strong correlation or pattern between price and the review related variables.  Based on the location review chart, it can be implied that higher prices are associated with better location reviews.  Based on the value review chart, it can be implied that higher prices are associted with lower value reviews.')
 print('')
 
 print('Price Correlation with Distance Variables')
-sns.heatmap(data_new[['dist_dtla','dist_hw','dist_sm','dist_bh','price']].corr(), annot=True, fmt=".2f")
-plt.show()
-plt.clf()
+print_chart(data_new[['dist_dtla','dist_hw','dist_sm','dist_bh','price']].corr(),'heatmap')
 
-data_new.groupby(['dist_dtla'])['price'].mean().plot(kind='line')
-plt.show()
-plt.clf()
+dist_vars = data_new[['dist_dtla','dist_hw','dist_sm','dist_bh']].columns
 
-data_new.groupby(['dist_hw'])['price'].mean().plot(kind='line')
-plt.show()
-plt.clf()
+for x in dist_vars:
+    print_chart(data_new.groupby([x])['price'].mean(),'line')
 
-data_new.groupby(['dist_sm'])['price'].mean().plot(kind='line')
-plt.show()
-plt.clf()
 
-data_new.groupby(['dist_bh'])['price'].mean().plot(kind='line')
-plt.show()
-plt.clf()
-
-print('Finding - There is not a strong correlation between the distance variables and price.')
-print('Based on the charts, it looks like the higher priced listings are located within 0 to 10 miles within tourist destinations,')
-print('Based on the charts, it looks like the price drops for listings that are greater than 30 to 40 miles away.')
+print('Finding - There is not a strong correlation between the distance variables and price.  Based on the charts, it looks like the higher priced listings are located within 0 to 10 miles within tourist destinations.  Based on the charts, it looks like the price drops for listings that are greater than 30 to 40 miles away.')
 print('')
 
-print('Summary Finding - The review and distance varibles are not as impactful; however, there are some patterns that can be identified,')
-print('These variables along with the one identified in the first analysis can be used to create a predictive model.')
-
-
-##########################################################
-# Analyze
-##########################################################
-
-##########################################################
-# Question #3 - Can the AirBnb listing prices be predicted?
-##########################################################
+print('Summary Finding - The review and distance varibles are not as impactful; however, there are some patterns that can be identified.  These variables along with the one identified in the first analysis can be used to create a predictive model.')
 
